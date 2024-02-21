@@ -1,6 +1,13 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 function App() {
+
+  const reduxStore = useSelector(store => store);
+
+  const dispatch = useDispatch();
+
   const [currentPitcher, setCurrentPitcher] = useState('Maud Nelson');
   const [currentCatcher, setCurrentCatcher] = useState('Elston Howard');
 
@@ -16,6 +23,7 @@ function App() {
   // add new pitcher to the array. this will move to the pitcher reducer!
   const handlePitcherSubmit = event => {
     event.preventDefault();
+    // const dispatch = useDispatch();
     // spread: give me everything in pitcherList, then add this new thing
     setPitcherList([...pitcherList, newPitcher]);
     setNewPitcher('');
@@ -38,7 +46,7 @@ function App() {
       <h1>Redux Baseball Pitchers</h1>
       <h2>On the Mound: {currentPitcher}</h2>
       <h2>Behind the Plate: {currentCatcher}</h2>
-      <div>Total Pitchers: {pitcherList.length}</div>
+      <TotalPitchers />
       <div>Total Catchers: {catcherList.length}</div>
       <h3>All Pitchers</h3>
       <form onSubmit={handlePitcherSubmit}>
@@ -48,7 +56,7 @@ function App() {
           onChange={handlePitcherNameChange}
           placeholder="New Pitcher Name"
         />
-        <button type="submit">Add Pitcher</button>
+        <button type="submit" onClick={() => dispatch({type: 'PITCHER_ADD'})}>Add Pitcher</button>
       </form>
       <ul>
         {pitcherList.map(pitcher => (
@@ -67,7 +75,7 @@ function App() {
           onChange={handleCatcherNameChange}
           placeholder="New Catcher Name"
         />
-        <button type="submit">Add Catcher</button>
+        <button type="submit" onClick={() => dispatch({type: 'CATCHER_ADD'})}>Add Catcher</button>
       </form>
       <ul>
         {catcherList.map(catcher => (
